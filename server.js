@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 
 const app = express();
 
@@ -43,8 +44,14 @@ const products = [
     "Rs 7,990",
     "https://www.wow.lk/wowdocroot/content/1.3/images/2016/golive/Promate/images/rustic04/01-190x190.jpg"
   ]
-].map(([name, price, imageUrl]) => ({ name, price, imageUrl }));
+].map(([name, price, imageUrl], i) => ({ id: i + 1, name, price, imageUrl }));
 
-app.get("*", (_, res) => res.send(products));
+app.use(cors());
+
+app.get("*", (_, res) => {
+  setTimeout(() => {
+    res.send(products);
+  }, 1000 * 2.5);
+});
 
 app.listen(8000, () => console.log(`Server listening at 8000....`));
